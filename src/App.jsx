@@ -3,6 +3,7 @@ import { questions } from "./quizData.jsx";
 import Question from "./Question.jsx";
 import Results from "./Results.jsx";
 import "./App.css";
+import Timer from "./Timer.jsx";
 
 function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -10,8 +11,13 @@ function App() {
   const [showScore, setShowScore] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [quizStart, setQuizStart] = useState(false);
+  const [time, setTime] = useState(0);
 
   const handleAnswerOptionClick = (answer) => {
+    if (!quizStart) {
+      setQuizStart(true);
+    }
     setSelectedAnswer(answer);
     setIsSubmitted(true);
 
@@ -21,6 +27,7 @@ function App() {
         setCurrentQuestion(nextQuestion);
       } else {
         setShowScore(true);
+        setQuizStart(false);
       }
       if (answer === questions[currentQuestion].correctAnswer) {
         setScore(score + 1);
@@ -35,13 +42,24 @@ function App() {
     setScore(0);
     setShowScore(false);
     setSelectedAnswer(null);
+    setQuizStart(false); // Reset timer and timer state
+    setTime(0);
   };
 
   return (
     <div className="app">
+      {!showScore && (
+        <div className="top-bar">
+          <Timer start={quizStart} setTime={setTime} />
+          <div className="progress-bar">
+            <progress value={currentQuestion} max={questions.length} />
+          </div>
+        </div>
+      )}
       {showScore ? (
         <Results
           score={score}
+          elapsedTime={time}
           totalQuestions={questions.length}
           handleRetakeQuiz={handleRetakeQuiz}
         />
