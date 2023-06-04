@@ -20,8 +20,8 @@ const Question = ({
             style={{
               backgroundColor: isSubmitted
                 ? answer === data.correctAnswer
-                  ? "green"
-                  : "red"
+                  ? "var(--success-color)"
+                  : "var(--danger-color)"
                 : "",
               pointerEvents: isSubmitted ? "none" : "",
               border:
