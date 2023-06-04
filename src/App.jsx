@@ -51,8 +51,11 @@ function App() {
       {!showScore && (
         <div className="top-bar">
           <Timer start={quizStart} setTime={setTime} />
-          <div className="progress-bar">
-            <progress value={currentQuestion} max={questions.length} />
+          <div
+            className="progress-bar"
+            style={{ width: `${(currentQuestion / questions.length) * 100}%` }}
+          >
+            <div className="progress-bar-shine" />
           </div>
         </div>
       )}

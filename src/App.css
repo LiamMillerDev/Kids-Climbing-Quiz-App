@@ -136,10 +136,38 @@ img {
 }
 
 .progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 0;
+  background-color: var(--success-color);
+  transition: width 0.3s ease;
+  z-index: 10;
+  overflow: hidden;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.progress-bar-shine {
   position: absolute;
   top: 0;
   left: 0;
-  height: 5px;
-  width: 100%;
-  transition: width 0.3s ease;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0)
+  );
+  transform: skewX(-20deg);
+  animation: shine 2s infinite linear;
 }
