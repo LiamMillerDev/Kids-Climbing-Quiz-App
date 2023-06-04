@@ -1,9 +1,33 @@
 import React, { useState } from "react";
-import { questions } from "./quizData.jsx";
+import { questions as originalQuestions } from "./quizData.jsx";
 import Question from "./Question.jsx";
 import Results from "./Results.jsx";
 import "./App.css";
 import Timer from "./Timer.jsx";
+
+// Define the shuffle function
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+// Shuffle the questions
+const questions = shuffle([...originalQuestions]);
 
 function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);

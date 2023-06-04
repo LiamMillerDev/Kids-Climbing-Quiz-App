@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Question = ({
   data,
@@ -6,14 +6,39 @@ const Question = ({
   selectedAnswer,
   isSubmitted,
 }) => {
+  const [shuffledAnswers, setShuffledAnswers] = useState([]);
+
+  // Function to shuffle the answers
+  function shuffle(array) {
+    let currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
+  // Shuffle the answers when the question changes
+  useEffect(() => {
+    setShuffledAnswers(shuffle([...data.answers]));
+  }, [data]);
+
   return (
     <>
-      <img src={data.image} alt="question" />
+      {data.hasImage && <img src={data.image} alt="question" />}
+
       <div className="question-section">
         <div className="question-text">{data.question}</div>
       </div>
       <div className="answer-section">
-        {data.answers.map((answer, index) => (
+        {shuffledAnswers.map((answer, index) => (
           <button
             key={index}
             onClick={() => handleAnswerOptionClick(answer)}
