@@ -6,17 +6,15 @@ function Results({ score, totalQuestions, handleRetakeQuiz, elapsedTime }) {
 
   return (
     <div className="results-section">
-      <h2>
-        <span>
-          You scored {score} out of {totalQuestions}
-        </span>
-      </h2>
-      <h2>
-        <span>
-          Time: {minutes} : {seconds}
-        </span>
-      </h2>
-      <button onClick={handleRetakeQuiz}>Retake Quiz</button>
+      <div className="results-card">
+        <h2>
+          You scored {score} out of {totalQuestions}!
+        </h2>
+        <h2>
+          Your time was: {minutes}:{seconds}
+        </h2>
+        <button onClick={handleRetakeQuiz}>Retake Quiz</button>
+      </div>
     </div>
   );
 }

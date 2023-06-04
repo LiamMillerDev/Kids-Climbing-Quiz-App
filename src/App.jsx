@@ -12,12 +12,9 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [quizStart, setQuizStart] = useState(false);
-  const [time, setTime] = useState(0);
+  const [elapsedTime, setTime] = useState(0);
 
   const handleAnswerOptionClick = (answer) => {
-    if (!quizStart) {
-      setQuizStart(true);
-    }
     setSelectedAnswer(answer);
     setIsSubmitted(true);
 
@@ -27,7 +24,6 @@ function App() {
         setCurrentQuestion(nextQuestion);
       } else {
         setShowScore(true);
-        setQuizStart(false);
       }
       if (answer === questions[currentQuestion].correctAnswer) {
         setScore(score + 1);
@@ -42,36 +38,49 @@ function App() {
     setScore(0);
     setShowScore(false);
     setSelectedAnswer(null);
-    setQuizStart(false); // Reset timer and timer state
     setTime(0);
+    setQuizStart(false);
+  };
+
+  const handleStartQuiz = () => {
+    setQuizStart(true);
   };
 
   return (
     <div className="app">
-      {!showScore && (
-        <div className="top-bar">
-          <Timer start={quizStart} setTime={setTime} />
-          <div
-            className="progress-bar"
-            style={{ width: `${(currentQuestion / questions.length) * 100}%` }}
-          >
-            <div className="progress-bar-shine" />
+      {!quizStart ? (
+        <div className="start-screen">
+          <div className="start-card">
+            <h1>Welcome to the Quiz!</h1>
+            <button onClick={handleStartQuiz}>Start Quiz</button>
           </div>
         </div>
-      )}
-      {showScore ? (
+      ) : !showScore ? (
+        <>
+          <Timer start={quizStart} setTime={setTime} />
+          <div className="top-bar">
+            <div
+              className="progress-bar"
+              style={{
+                width: `${(currentQuestion / questions.length) * 100}%`,
+              }}
+            >
+              <div className="progress-bar-shine" />
+            </div>
+          </div>
+          <Question
+            data={questions[currentQuestion]}
+            handleAnswerOptionClick={handleAnswerOptionClick}
+            selectedAnswer={selectedAnswer}
+            isSubmitted={isSubmitted}
+          />
+        </>
+      ) : (
         <Results
           score={score}
-          elapsedTime={time}
           totalQuestions={questions.length}
           handleRetakeQuiz={handleRetakeQuiz}
-        />
-      ) : (
-        <Question
-          data={questions[currentQuestion]}
-          handleAnswerOptionClick={handleAnswerOptionClick}
-          selectedAnswer={selectedAnswer}
-          isSubmitted={isSubmitted}
+          elapsedTime={elapsedTime}
         />
       )}
     </div>
