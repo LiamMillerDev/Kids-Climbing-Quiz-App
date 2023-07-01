@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/mountain-whiz/",
   build: {
-    outDir: "dist",
+    base: "./",
+    assetsDir: "assets",
   },
 });
